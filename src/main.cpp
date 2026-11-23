@@ -12,8 +12,8 @@ bool runCommand(const std::string &command) {
 }
 
 int main(int argc, char *argv[]) {
-  if (argc < 3) {
-    std::cerr << "Usage: nu <project_name> <os/home>" << std::endl;
+  if (argc < 2) {
+    std::cerr << "Usage: nu <input (optional)> <os/home>" << std::endl;
     return 1;
   }
   const char *env_p = std::getenv("NH_FLAKE");
@@ -21,10 +21,13 @@ int main(int argc, char *argv[]) {
     std::cerr << "NH_FLAKE variable not found.\n";
     return 1;
   }
+  std::string input{""};
 
+  if (argc == 3) {
+    input = argv[1];
+  }
   std::string flake_dir{env_p};
-  std::string input{argv[1]};
-  std::string attr{argv[2]};
+  std::string attr{argv[argc - 1]};
 
   if (attr != "os" && attr != "home") {
     std::cerr << "Usage: nu <project_name> <os/home>" << std::endl;
